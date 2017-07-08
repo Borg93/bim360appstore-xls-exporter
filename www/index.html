@@ -2,50 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Autodesk Forge - NodeJS - Template</title>
+  <title>BIM export to .XLSX</title>
   <!-- Common packages: JQuery & Bootstrap -->
   <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <script language="JavaScript" src="/js/jquery.min.js"></script>
-  <script language="JavaScript" src="/js/bootstrap.min.js"></script>
-  <!-- Autodesk Forge Viewer files -->
-  <link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.min.css" type="text/css">
-  <script language="JavaScript" src="https://developer.api.autodesk.com/viewingservice/v1/viewers/three.min.js"></script>
-  <script language="JavaScript" src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js"></script>
-  <!-- this project main script -->
+  <link rel="stylesheet" href="/css/jstree/style.css"/>
   <link rel="shortcut icon" href=/img/favicon.ico type=image/x-icon>
   <link rel="stylesheet" href="/css/main.css"/>
-  <script language="JavaScript" src="/js/oauth.js"></script>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/jstree.min.js"></script>
+  <script src="/js/moment.min.js"></script>
+
+  <!-- Notification ballons -->
+  <script src="js/libraries/notify.min.js"></script>
+  
+  <!-- Autodesk Forge Viewer files -->
+  <link rel="stylesheet" href="https://developer.api.autodesk.com/viewingservice/v1/viewers/style.min.css?v=v2.15" type="text/css" />
+  <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/three.min.js"></script>
+  <script src="https://developer.api.autodesk.com/viewingservice/v1/viewers/viewer3D.min.js?v=v2.15"></script>
+
+  <!-- BIM360 packages: login and authentication -->
+  <script src="/js/oauth.js"></script>
+  <script src="/js/forge.data.management.js"></script>
+  <script src="/js/forge.viewer.js"></script>
+  <script src="/js/xlsextension.js"></script>
+
+ <!-- XLS related libraries -->
+  <script src="js/libraries/Blob.js"></script> <!-- https://github.com/eligrey/Blob.js -->
+  <script src="js/libraries/FileSaver.min.js"></script> <!-- https://github.com/eligrey/FileSaver.js -->
+  <script src="js/libraries/xlsx.core.min.js"></script> <!-- https://github.com/SheetJS/js-xlsx -->
+  <script src="js/ForgeXLS.js"></script>
+
 </head>
 <body>
-<!-- Fixed navbar by Bootstrap: https://getbootstrap.com/examples/navbar-fixed-top/ -->
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
-
     <ul class="nav navbar-nav left">
       <li>
         <a href="http://developer.autodesk.com" target="_blank">
-          <img alt="Autodesk Forge" src="/img/autodesk-forge.png" height="20">
-          Autodesk Forge
+          <img alt="Autodesk Forge" src="/img/excel.png" height="30" />
+          Export to Excel (.xlsx)
         </a>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-right">
-      <li>
-        <a href="#" id="signInButton"><span class="glyphicon glyphicon-user" id="signInProfileImage"></span>
-          <span id="signInButtonText" title="Sign in with your Autodesk Account">Sign in</span></a>
       </li>
     </ul>
   </div>
 </nav>
-<!-- End of navbar -->
-<div class="container-fluid">
-  <div class="jumbotron">
-    <h2>Autodesk Forge</h2>
-    <h4>This basic template will help you get started with NodeJS projects.</h4>
-    <h6>Create your developer key & secret at <a href="http://developer.autodesk.com" target="_blank">Autodesk
-      Developer</a>.</h6>
-    <h6>OAuth 2.0 implemented at the <b>Login</b> button. See /routes/oauth.js for more information</h6>
-  </div>
+<div id="dataManagementHubs" class="dataManagementHubs">
+  tree here
 </div>
+<!-- End of navbar -->
+<div id="forgeViewer" class="forgeviewer"></div>
 </body>
 </html>

@@ -40,14 +40,17 @@ app.use(session({
 app.use('/', express.static(__dirname + '/../www')); // redirect static calls
 app.use('/js', express.static(__dirname + '/../node_modules/bootstrap/dist/js')); // redirect static calls
 app.use('/js', express.static(__dirname + '/../node_modules/jquery/dist')); // redirect static calls
+app.use('/js', express.static(__dirname + '/../node_modules/jstree/dist')); // redirect static calls
+app.use('/js', express.static(__dirname + '/../node_modules/moment/min')); // redirect static calls
 app.use('/css', express.static(__dirname + '/../node_modules/bootstrap/dist/css')); // redirect static calls
+app.use('/css/jstree', express.static(__dirname + '/../node_modules/jstree/dist/themes/default')); // redirect static calls (jstree use 'style.css', which is very generic, so let's use an extra folder)
 app.use('/fonts', express.static(__dirname + '/../node_modules/bootstrap/dist/fonts')); // redirect static calls
 app.set('port', process.env.PORT || 3000); // main port
 
 // prepare our API endpoint routing
 var oauth = require('./oauth');
-var myApp = require('./app');
+var datamanagement = require('./data.management.tree.js');
 app.use('/', oauth); // redirect oauth API calls
-app.use('/', myApp); // redirect our custom API calls
+app.use('/', datamanagement); // redirect our custom API calls
 
 module.exports = app;

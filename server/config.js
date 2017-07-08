@@ -20,6 +20,8 @@
 
 module.exports = {
 
+  // Autodesk Forge configuration
+
   // this this callback URL when creating your client ID and secret
   callbackURL: process.env.FORGE_CALLBACK_URL || 'http://localhost:3000/api/forge/callback/oauth',
 
@@ -30,7 +32,7 @@ module.exports = {
   },
 
   // Required scopes for your application on server-side
-  scopeInternal: 'data:read data:write data:create data:search bucket:create bucket:read bucket:update bucket:delete',
+  scopeInternal: ['data:read','data:write','data:create','data:search'],
   // Required scope of the token sent to the client
-  scopePublic: 'data:read',
+  scopePublic: ['viewables:read'],
 };

@@ -20,7 +20,7 @@ $(document).ready(function () {
   var currentToken = getForgeToken();
 
   if (currentToken === '')
-    $('#signInButton').click(forgeSignIn);
+    forgeSignIn();
   else {
     getForgeUserProfile(function (profile) {
       $('#signInProfileImage').removeClass(); // remove glyphicon-user
@@ -68,7 +68,7 @@ function getForgeUserProfile(onsuccess) {
   jQuery.ajax({
     url: '/user/profile',
     success: function (profile) {
-      onsuccess(JSON.parse(profile));
+      onsuccess(profile);
     }
   });
 }

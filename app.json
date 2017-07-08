@@ -1,7 +1,7 @@
 {
-  "name": "forge-3leg.nodejs-template",
-  "description": "Basic template for Autodesk Forge NodeJS apps with 3 legged OAuth",
-  "repository": "https://github.com/augustogoncalves/forge-3leg.nodejs-template",
+  "name": "Extract.Data.Sample",
+  "description": "Extract data to another service",
+  "repository": "https://github.com/AugustoGoncalves/extract.data.sample",
   "logo": "https://avatars0.githubusercontent.com/u/8017462?v=3&s=200",
   "keywords": [
     "express",
@@ -18,7 +18,7 @@
       "description": "Forge Client Secret"
     },
     "FORGE_CALLBACK_URL": {
-      "description": "Callback URL of your app, required for 3-legged OAuth",
+      "description": "Callback URL of your Forge app, required for 3-legged OAuth",
       "value": "https://<<YOUR HEROKU APP NAME HERE>>.herokuapp.com/api/forge/callback/oauth"
     }
   },
