@@ -8,7 +8,7 @@ This sample will list all files under the BIM360 user account (using 3-legged OA
 
 ### Live version
 
-WIP
+[https://BIM360xls-exporter.herokuapp.com](https://bim360xls-exporter.herokuapp.com/)
 
 # Setup
 
