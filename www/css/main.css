@@ -9,10 +9,7 @@ body {
 #dataManagementHubs {
     width: 250px;
     overflow: auto;
-    height: calc(100vh - 171px);
-    position: absolute;
-    background-color: #e0e0e0;
-    padding-left: 55px;
+    height: 100%;
 }
 
 #forgeViewer {
@@ -32,7 +29,7 @@ body {
 
 .toolbarXLSButton {
     background-image: url(/img/excel.png);
-    background-size: 28px;
+    background-size: 16px;
     background-repeat: no-repeat;
     background-position: center;
 }

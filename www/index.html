@@ -40,7 +40,7 @@
     <ul class="nav navbar-nav left">
       <li>
         <a href="http://developer.autodesk.com" target="_blank">
-          <img alt="Autodesk Forge" src="/img/excel.png" height="30" />
+          <img alt="Autodesk Forge" src="/img/excel.png" height="22" />
           Export to Excel (.xlsx)
         </a>
       </li>
@@ -48,7 +48,7 @@
 
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <a href="#" id="BIMconfig" data-toggle="modal" data-target="#dataManagementHubs"><span class="glyphicon glyphicon-info-sign"></span>
+        <a href="#" id="BIMconfig" onclick="$('#provisionAccountModal').modal('show');"><span class="glyphicon glyphicon-info-sign"></span>
           <span id="helpButtonText" title="Info on setting up BIM credentials">Config</span></a>
       </li>
       <li>
@@ -61,7 +61,7 @@
   </div>
 </nav>
 <div id="dataManagementHubs" class="dataManagementHubs">
-  <Button onclick="forgeSignIn()">Login</Button>
+  <Button style="margin-left:5px" onclick="forgeSignIn()">Sign In</Button>
 </div>
 <!-- End of navbar -->
 <div id="forgeViewer" class="forgeviewer"></div>
@@ -91,8 +91,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="provisionAccountSave">Done</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
       </div>
     </div>
   </div>
