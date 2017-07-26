@@ -20,7 +20,7 @@ $(document).ready(function () {
   var currentToken = getForgeToken();
 
   if (currentToken === '')
-    forgeSignIn();
+    $('#signInButton').click(forgeSignIn);
   else {
     getForgeUserProfile(function (profile) {
       $('#signInProfileImage').removeClass(); // remove glyphicon-user
