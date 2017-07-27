@@ -92,7 +92,7 @@ router.get('/dm/getTreeNode', function (req, res) {
         break;
       case 'items':
         var projectId = params[params.length - 3];
-        getVersions(projectId, resourceId/*item_id*/, forge3legged, token.getForgeCredentials(), res);
+        getVersions(projectId, resourceId, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials());
     }
   }
 });
@@ -107,7 +107,7 @@ function getVersions(projectId, itemId, oauthClient, credentials, res) {
         var lastModifiedTime = moment(version.attributes.lastModifiedTime);
         var days = moment().diff(lastModifiedTime, 'days')
         var dateFormated = (versions.body.data.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
-        versionsForTree.push(prepareItemForTree(
+        versionsForTree.push(prepareArrayForJSTree(
           version.links.self.href,
           dateFormated + ' by ' + version.attributes.lastModifiedUserName,
           'versions',
@@ -118,7 +118,7 @@ function getVersions(projectId, itemId, oauthClient, credentials, res) {
     })
     .catch(function (error) {
       console.log(error);
-      res.status(500).end();
+      respondWithError(res, error);
     })
 }
 
