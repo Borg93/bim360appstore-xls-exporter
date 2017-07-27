@@ -37,22 +37,32 @@ function prepareDataManagementTree() {
         "dataType": "json",
         'multiple': false,
         "data": function (node) {
+          $('#dataManagementHubs').jstree(true).toggle_node(node);
           return {"id": node.id};
         }
       }
     },
-    'types': {
+'types': {
       'default': {
-        'icon': 'glyphicon glyphicon-cloud'
+        'icon': 'glyphicon glyphicon-question-sign'
       },
       '#': {
         'icon': 'glyphicon glyphicon-user'
       },
       'hubs': {
-        'icon': 'glyphicon glyphicon-inbox'
+        'icon': '/img/a360hub.png'
       },
-      'projects': {
-        'icon': 'glyphicon glyphicon-list-alt'
+      'personalHub': {
+        'icon': '/img/a360hub.png'
+      },
+      'bim360Hubs': {
+        'icon': '/img/bim360hub.png'
+      },
+      'bim360projects': {
+        'icon': '/img/bim360project.png'
+      },
+      'a360projects': {
+        'icon': '/img/a360project.png'
       },
       'items': {
         'icon': 'glyphicon glyphicon-file'
