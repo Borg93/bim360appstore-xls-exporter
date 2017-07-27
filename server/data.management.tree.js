@@ -44,7 +44,7 @@ router.get('/dm/getTreeNode', function (req, res) {
 
         projects.getHubProjects(resourceId/*hub_id*/, {},
           tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
-          .then(function (projects) {
+          .then(function (projectsse 'hubs'{
             res.json(prepareArrayForJSTree(projects.body.data, true));
           })
           .catch(function (error) {
@@ -91,21 +91,36 @@ router.get('/dm/getTreeNode', function (req, res) {
           });
         break;
       case 'items':
-        // if the caller is an item, then show versions
         var projectId = params[params.length - 3];
-        var items = new forgeSDK.ItemsApi();
-        items.getItemVersions(projectId, resourceId/*item_id*/,
-          {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
-          .then(function (versions) {
-            res.json(prepareArrayForJSTree(versions.body.data, false));
-          })
-          .catch(function (error) {
-            console.log(error);
-            respondWithError(res, error);
-          });
+        getVersions(projectId, resourceId/*item_id*/, forge3legged, token.getForgeCredentials(), res);
     }
   }
 });
+
+function getVersions(projectId, itemId, oauthClient, credentials, res) {
+  var items = new forgeSDK.ItemsApi();
+  items.getItemVersions(projectId, itemId, {}, oauthClient, credentials)
+    .then(function (versions) {
+      var versionsForTree = [];
+      versions.body.data.forEach(function (version) {
+        var moment = require('moment');
+        var lastModifiedTime = moment(version.attributes.lastModifiedTime);
+        var days = moment().diff(lastModifiedTime, 'days')
+        var dateFormated = (versions.body.data.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
+        versionsForTree.push(prepareItemForTree(
+          version.links.self.href,
+          dateFormated + ' by ' + version.attributes.lastModifiedUserName,
+          'versions',
+          false
+        ));
+      });
+      res.json(versionsForTree);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).end();
+    })
+}
 
 // Formats a list to JSTree structure
 function prepareArrayForJSTree(listOf, canHaveChildren, data) {
