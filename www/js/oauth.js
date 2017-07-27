@@ -43,7 +43,7 @@ function forgeSignIn() {
 
 function forgeLogoff() {
   jQuery.ajax({
-    url: '/user/forgeLogoff',
+    url: '/user/logoff',
     success: function (oauthUrl) {
       location.href = oauthUrl;
     }
