@@ -97,7 +97,7 @@ router.get('/dm/getTreeNode', function (req, res) {
         items.getItemVersions(projectId, resourceId/*item_id*/,
           {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
           .then(function (versions) {
-            res.json( formatVersionDates(versions.body.data), false);
+            res.json(prepareArrayForJSTree(versions.body.data), false);
           })
           .catch(function (error) {
             console.log(error);
