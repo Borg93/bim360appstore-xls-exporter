@@ -28,6 +28,8 @@ $(document).ready(function () {
 
 });
 
+var haveBIM360Hub = false;
+
 function prepareDataManagementTree() {
   $('#dataManagementHubs').jstree({
     'core': {
@@ -39,10 +41,27 @@ function prepareDataManagementTree() {
         "data": function (node) {
           $('#dataManagementHubs').jstree(true).toggle_node(node);
           return {"id": node.id};
-        }
+        },
+        "success": function (nodes) {
+          nodes.forEach(function (n) {
+            if (n.type === 'bim360hubs' && n.id.indexOf('b.') > 0)
+              haveBIM360Hub = true;
+          });
+          if (!haveBIM360Hub) {
+            $.getJSON("/api/forge/clientID", function (data) {
+              $("#ClientID").val(data.ForgeClientId);
+              $("#provisionAccountModal").modal();
+              $("#provisionAccountSave").click(function () {
+                $('#provisionAccountModal').modal('toggle');
+                $('#dataManagementHubs').jstree(true).refresh();
+              });
+              haveBIM360Hub = true;
+            });
+          }
+        }        
       }
     },
-'types': {
+    'types': {
       'default': {
         'icon': 'glyphicon glyphicon-question-sign'
       },
@@ -74,7 +93,8 @@ function prepareDataManagementTree() {
         'icon': 'glyphicon glyphicon-time'
       }
     },
-    "plugins": ["types", "state", "sort", "contextmenu"]
+    "plugins": 
+      ["types", "state", "sort", "contextmenu"]
   }).bind("activate_node.jstree", function (evt, data) {
     if (data != null && data.node != null && data.node.type == 'versions') {
       if (data.node.id === 'not_available') { alert('No viewable available for this version'); return; }

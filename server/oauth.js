@@ -15,6 +15,12 @@ var config = require('./config');
 
 var request = require('request');
 
+router.get('/api/forge/clientID', function (req, res) {
+  res.json({
+    'ForgeClientId': config.credentials.client_id
+  });
+});
+
 // this end point will logoff the user by destroying the session
 // as of now there is no Forge endpoint to invalidate tokens
 router.get('/user/logoff', function (req, res) {
