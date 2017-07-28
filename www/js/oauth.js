@@ -26,7 +26,7 @@ $(document).ready(function () {
       $('#signInProfileImage').removeClass(); // remove glyphicon-user
       $('#signInProfileImage').html('<img src="' + profile.picture + '"/>')
       $('#signInButtonText').text(profile.name);
-      $('#signInButtonText').attr('title', 'Click to forgeLogoff');
+      $('#signInButtonText').attr('title', 'Click to Logout');
       $('#signInButton').click(forgeLogoff);
     });
   }
