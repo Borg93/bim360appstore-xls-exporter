@@ -7,7 +7,7 @@ XLSExtension.prototype.constructor = XLSExtension;
 
 
   function statusCallback(completed, message) {
-    $.notify(message, 'info');
+    $.notify(message, { className: "info", position:"bottom right" });
     $('#downloadExcel').prop("disabled", !completed);
   }
 
