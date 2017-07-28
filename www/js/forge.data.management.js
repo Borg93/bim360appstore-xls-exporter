@@ -80,6 +80,8 @@ function prepareDataManagementTree() {
       if (data.node.id === 'not_available') { alert('No viewable available for this version'); return; }
       var parent_node = $('#dataManagementHubs').jstree(true).get_node(data.node.parent);
       launchViewer(data.node.data, parent_node.text);
+      console.log(parent_node.text);
+      $.notify("loading... " + parent_node.text, { className: "info", position:"bottom right" });
     }
   });;
 }

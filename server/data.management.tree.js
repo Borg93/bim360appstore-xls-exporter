@@ -107,38 +107,26 @@ router.get('/dm/getTreeNode', function (req, res) {
   }
 });
 
-function formatVersionDates(versions) {
-  var versionsForTree = [];
-  versions.forEach(function (version) {
-    var moment = require('moment');
-    var lastModifiedTime = moment(version.attributes.lastModifiedTime);
-    var days = moment().diff(lastModifiedTime, 'days')
-    var dateFormated = (versions.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
-    versionsForTree.push(prepareArrayForJSTree(
-      version.links.self.href,
-      dateFormated + ' by ' + version.attributes.lastModifiedUserName,
-      'versions',
-      false
-    ));
-  });
-  return versionsForTree;
-}
+var moment = require('moment');
 
 // Formats a list to JSTree structure
 function prepareArrayForJSTree(listOf, canHaveChildren, data) {
   if (listOf == null) return '';
   var treeList = [];
   listOf.forEach(function (item, index) {
-    //console.log(item.links.self.href);
-    //console.log(
-    //  "item.attributes.displayName = " + item.attributes.displayName +
-    //  "; item.attributes.name = " + item.attributes.name
-    //);
+
+    var szDate = item.attributes.lastModifiedTime;
+    if (!canHaveChildren) {
+      var lastModifiedTime = moment(item.attributes.lastModifiedTime);
+      var days = moment().diff(lastModifiedTime, 'days')
+      szDate = (listOf.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
+    }
+
     var treeItem = {
       id: item.links.self.href,
       data: (item.relationships != null && item.relationships.derivatives != null ?
         item.relationships.derivatives.data.id : null),
-      text: (item.type==='versions' ? item.attributes.lastModifiedTime : item.attributes.displayName == null ? item.attributes.name : item.attributes.displayName),
+      text: (item.type==='versions' ? szDate : item.attributes.displayName == null ? item.attributes.name : item.attributes.displayName),
       type: item.type,
       children: canHaveChildren
     };
