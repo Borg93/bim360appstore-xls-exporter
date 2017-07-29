@@ -50,12 +50,7 @@ function prepareDataManagementTree() {
           if (!haveBIM360Hub) {
             $.getJSON("/api/forge/clientID", function (data) {
               $("#ClientID").val(data.ForgeClientId);
-              $("#provisionAccountModal").modal();
-              $("#provisionAccountSave").click(function () {
-                $('#provisionAccountModal').modal('toggle');
-                $('#dataManagementHubs').jstree(true).refresh();
-              });
-              haveBIM360Hub = true;
+              $("#BIMconfig").show();
             });
           }
         }        
@@ -99,8 +94,7 @@ function prepareDataManagementTree() {
     if (data != null && data.node != null && data.node.type == 'versions') {
       if (data.node.id === 'not_available') { alert('No viewable available for this version'); return; }
       var parent_node = $('#dataManagementHubs').jstree(true).get_node(data.node.parent);
-      launchViewer(data.node.data, parent_node.text);
-      console.log(parent_node.text);
+      launchViewer(data.node.id, parent_node.text);
       $.notify("loading... " + parent_node.text, { className: "info", position:"bottom right" });
     }
   });;

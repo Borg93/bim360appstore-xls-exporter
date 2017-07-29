@@ -48,7 +48,7 @@
 
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <a href="#" id="BIMconfig" onclick="$('#provisionAccountModal').modal('show');"><span class="glyphicon glyphicon-info-sign"></span>
+        <a href="#" id="BIMconfig" onclick="$('#provisionAccountModal').modal('show');" style="display: none"><span class="glyphicon glyphicon-info-sign"></span>
           <span id="helpButtonText" title="Info on setting up BIM credentials">Config</span></a>
       </li>
       <li>
@@ -65,7 +65,7 @@
   </div>
 </nav>
 <div id="dataManagementHubs" class="dataManagementHubs">
-  <Button style="margin-left:5px" onclick="forgeSignIn()">Sign In</Button>
+  <Button class="btn btn-lg btn-default" style="margin-left:5px" onclick="forgeSignIn()">Sign In</Button>
 </div>
 <!-- End of navbar -->
 <div id="forgeViewer" class="forgeviewer"></div>

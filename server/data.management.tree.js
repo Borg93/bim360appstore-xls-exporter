@@ -19,30 +19,199 @@ router.get('/dm/getTreeNode', function (req, res) {
   //("treeNode for " + href);
 
   if (href === '#') {
-    // # stands for ROOT
-    var hubs = new forgeSDK.HubsApi();
-
-    hubs.getHubs({}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
-      .then(function (data) {
-        res.json(prepareArrayForJSTree(data.body.data, true));
-      })
-      .catch(function (error) {
-        console.log(error);
-        respondWithError(res, error);
-      });
+    getHubs(tokenSession, res);
   } else {
     var params = href.split('/');
     var resourceName = params[params.length - 2];
     var resourceId = params[params.length - 1];
     switch (resourceName) {
       case 'hubs':
+        getProjects(resourceId, tokenSession, res);
+        break;
+      case 'projects':
+        // for a project, first we need the top/root folder
+        var hubId = params[params.length - 3];
+        getFolders(hubId, resourceId, tokenSession, res)
+        break;
+      case 'folders':
+        var projectId = params[params.length - 3];
+        getFolderContents(projectId, resourceId/*folder_id*/, tokenSession, res);
+        break;
+      case 'items':
+        var projectId = params[params.length - 3];
+        getVersions(projectId, resourceId/*item_id*/, tokenSession, res);
+        break;
+    }
+  }
+});
+
+function getFolders(hubId, projectId, tokenSession, res) {
+        // if the caller is a project, then show folders
+
+        var projects = new forgeSDK.ProjectsApi();
+        projects.getProjectTopFolders(hubId, projectId, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+          .then(function (topFolders) {
+            var folderItemsForTree = [];
+            topFolders.body.data.forEach(function (item) {
+              folderItemsForTree.push(prepareItemForTree(
+                item.links.self.href,
+                item.attributes.displayName == null ? item.attributes.name : item.attributes.displayName,
+                item.type,
+                true
+              ))
+            });
+            res.json(folderItemsForTree);
+          })
+          .catch(function (error) {
+            console.log(error);
+            res.status(500).end();
+          });
+}
+
+
+function getProjects(hubId, tokenSession, res) {
         // if the caller is a hub, then show projects
         var projects = new forgeSDK.ProjectsApi();
 
         //console.log(tokenSession.getInternalOAuth());
         //console.log(tokenSession.getInternalCredentials());
 
-        projects.getHubProjects(resourceId/*hub_id*/, {},
+        projects.getHubProjects(hubId, {},
+          tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+        .then(function (projects) {
+          var projectsForTree = [];
+          projects.body.data.forEach(function (project) {
+            var projectType = 'projects';
+            switch (project.attributes.extension.type) {
+              case 'projects:autodesk.core:Project':
+                projectType = 'a360projects';
+                break;
+              case 'projects:autodesk.bim360:Project':
+                projectType = 'bim360projects';
+                break;
+            }
+
+            projectsForTree.push(prepareItemForTree(
+              project.links.self.href,
+              project.attributes.name,
+              projectType,
+              true
+            ));
+          });
+          res.json(projectsForTree);
+        })
+        .catch(function (error) {
+          console.log(error);
+          res.status(500).end();
+        });
+}
+
+
+
+function getHubs(tokenSession, res) {
+   // # stands for ROOT
+    var hubs = new forgeSDK.HubsApi();
+
+    hubs.getHubs({}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+      .then(function (data) {
+      var hubsForTree = [];
+      data.body.data.forEach(function (hub) {
+        var hubType;
+
+        switch (hub.attributes.extension.type) {
+          case "hubs:autodesk.core:Hub":
+            hubType = "hubs";
+            break;
+          case "hubs:autodesk.a360:PersonalHub":
+            hubType = "personalHub";
+            break;
+          case "hubs:autodesk.bim360:Account":
+            hubType = "bim360Hubs";
+            break;
+        }
+
+        hubsForTree.push(prepareItemForTree(
+          hub.links.self.href,
+          hub.attributes.name,
+          hubType,
+          true
+        ));
+      });
+      res.json(hubsForTree);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).end();
+    });
+}
+
+
+
+function getFolderContents(projectId, folderId, tokenSession, res) {
+  var folders = new forgeSDK.FoldersApi();
+  folders.getFolderContents(projectId, folderId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+    .then(function (folderContents) {
+      var folderItemsForTree = [];
+      folderContents.body.data.forEach(function (item) {
+
+        var displayName = item.attributes.displayName == null ? item.attributes.name : item.attributes.displayName;
+        if (displayName !== '') { // BIM 360 Items with no displayName also don't have storage, so not file to transfer
+          folderItemsForTree.push(prepareItemForTree(
+            item.links.self.href,
+            displayName,
+            item.type,
+            true
+          ));
+        }
+      });
+      res.json(folderItemsForTree);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).end();
+    });
+}
+
+var moment = require('moment');
+
+function getVersions(projectId, itemId, tokenSession, res) {
+  var items = new forgeSDK.ItemsApi();
+  items.getItemVersions(projectId, itemId, {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
+    .then(function (versions) {
+      var versionsForTree = [];
+      versions.body.data.forEach(function (version) {
+        var lastModifiedTime = moment(version.attributes.lastModifiedTime);
+        var days = moment().diff(lastModifiedTime, 'days')
+        var dateFormated = (versions.body.data.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
+        var designId = (version.relationships != null && version.relationships.derivatives != null ?
+        version.relationships.derivatives.data.id : null);
+        versionsForTree.push(prepareItemForTree(
+          designId,
+          dateFormated + ' by ' + version.attributes.lastModifiedUserName,
+          'versions',
+          false
+        ));
+      });
+      res.json(versionsForTree);
+    })
+    .catch(function (error) {
+      console.log(error);
+      res.status(500).end();
+    })
+}
+
+
+
+function prepareItemForTree(_id, _text, _type, _children) {
+  return {id: _id, text: _text, type: _type, children: _children};
+}
+
+/*
+    switch (resourceName) {
+      case 'hubs':
+        // if the caller is a hub, then show projects
+        var projects = new forgeSDK.ProjectsApi();
+        projects.getHubProjects(resourceId, {},
           tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
           .then(function (projects) {
             res.json(prepareArrayForJSTree(projects.body.data, true));
@@ -56,7 +225,7 @@ router.get('/dm/getTreeNode', function (req, res) {
         // if the caller is a project, then show folders
         var hubId = params[params.length - 3];
         var projects = new forgeSDK.ProjectsApi();
-        projects.getProject(hubId, resourceId/*project_id*/,
+        projects.getProject(hubId, resourceId,
           tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
           .then(function (project) {
             var rootFolderId = project.body.data.relationships.rootFolder.data.id;
@@ -80,7 +249,7 @@ router.get('/dm/getTreeNode', function (req, res) {
         // if the caller is a folder, then show contents
         var projectId = params[params.length - 3];
         var folders = new forgeSDK.FoldersApi();
-        folders.getFolderContents(projectId, resourceId/*folder_id*/,
+        folders.getFolderContents(projectId, resourceId,
           {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
           .then(function (folderContents) {
             res.json(prepareArrayForJSTree(folderContents.body.data, true));
@@ -94,7 +263,7 @@ router.get('/dm/getTreeNode', function (req, res) {
         // if the caller is an item, then show versions
         var projectId = params[params.length - 3];
         var items = new forgeSDK.ItemsApi();
-        items.getItemVersions(projectId, resourceId/*item_id*/,
+        items.getItemVersions(projectId, resourceId,
           {}, tokenSession.getInternalOAuth(), tokenSession.getInternalCredentials())
           .then(function (versions) {
             res.json(prepareArrayForJSTree(versions.body.data, false));
@@ -104,8 +273,10 @@ router.get('/dm/getTreeNode', function (req, res) {
             respondWithError(res, error);
           });
     }
-  }
-});
+*/
+
+
+
 
 var moment = require('moment');
 
@@ -135,12 +306,5 @@ function prepareArrayForJSTree(listOf, canHaveChildren, data) {
   return treeList;
 }
 
-function respondWithError(res, error) {
-  if (error.statusCode) {
-    res.status(error.statusCode).end(error.statusMessage);
-  } else {
-    res.status(500).end(error.message);
-  }
-}
 
 module.exports = router;
