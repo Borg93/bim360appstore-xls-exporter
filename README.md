@@ -1,10 +1,10 @@
-# BIM360 - XLS Exporter
+# Export to Excel
 
 ![thumbnail](thumbnail.jpg)
 
 # Description
 
-This sample will list all files under the BIM360 user account (using 3-legged OAuth) and add an icon to the viewer toolbar to extract an excel spreadsheet of the data.
+This sample application demonstrates how to extract Revit data on your BIM360 account, into an excel spreadsheet.  The sample code demonstates 3-legged OAuth to BIM360, a simple viewer extension and code to handle Revit meta-data and format it into an excel spreadsheet file.
 
 ### Live version
 
@@ -12,7 +12,7 @@ This sample will list all files under the BIM360 user account (using 3-legged OA
 
 # Setup
 
-For using this sample, you need an Autodesk developer credentials. Visit the [Forge Developer Portal](https://developer.autodesk.com), sign up for an account, then [create an app](https://developer.autodesk.com/myapps/create). For this new app, use **http://localhost:3000/api/forge/callback/oauth** as Callback URL. Finally take note of the **Client ID** and **Client Secret**.
+For using this sample, you need to log into your Autodesk developer account. Visit the [Forge Developer Portal](https://developer.autodesk.com) and sign up for an account, then [create an app](https://developer.autodesk.com/myapps/create). When asked for the 'callback URL' in your new app, use **http://localhost:3000/api/forge/callback/oauth**. Finally take note of the **Client ID** and **Client Secret**.
 
 ### Run locally
 
