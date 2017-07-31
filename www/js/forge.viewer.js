@@ -57,12 +57,14 @@ function onDocumentLoadSuccess(doc) {
   // Choose any of the avialble viewables
   viewerApp.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFail);
 
-  NOP_VIEWER.loadExtension('Autodesk.Sample.XLSExtension');
 }
 
 function onDocumentLoadFailure(viewerErrorCode) {}
 
-function onItemLoadSuccess(viewer, item) {}
+function onItemLoadSuccess(_viewer, item) {
+  viewer = _viewer;
+  viewer.loadExtension('Autodesk.Sample.XLSExtension');  
+}
 
 function onItemLoadFail(errorCode) {}
 
