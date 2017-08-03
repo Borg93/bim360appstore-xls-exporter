@@ -48,7 +48,11 @@
 
     <ul class="nav navbar-nav navbar-right">
       <li>
-        <a href="#" id="BIMconfig" onclick="$('#provisionAccountModal').modal('show');" style="display: none"><span class="glyphicon glyphicon-info-sign"></span>
+        <a href="#" id="Help" onclick="$('#about').modal('show');"><span class="glyphicon glyphicon-info-sign"></span>
+          <span id="infoText" title="About this Autodesk App">About</span></a>
+      </li>
+      <li>
+        <a href="#" id="BIMconfig" onclick="$('#provisionAccountModal').modal('show');" style="display: none"><span class="glyphicon glyphicon-cog"></span>
           <span id="helpButtonText" title="Info on setting up BIM credentials">Config</span></a>
       </li>
       <li>
@@ -100,6 +104,7 @@
     </div>
   </div>
 </div>
+
 <!-- Modal Provision BIM360 Help  -->
 <div class="modal fade" id="provisionAccountStepsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -131,6 +136,38 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Understood, thanks!</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- About  -->
+<div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cancel"><span
+            aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">About, Contact and Instructions</h4>
+      </div>
+      <div class="modal-body">
+        <h4>About</h4>
+        <p>Developed by <a href="http://developer.autodesk.com">Forge Partner Development</a> team at Autodesk, Inc.</p>
+        <p>Get the <a href="https://github.com/wallabyway/bim360appstore-xls-exporter" target="_blank">source code</a>.</p>
+        <h4>Contact us</h4>
+        <p>Question? Suggestions? <a href="mailto:bim360apps@autodesk.com">Contact us</a> directly or see our <a href="https://github.com/wallabyway/bim360appstore-xls-exporter/issues" target="_blank">open issues</a>.</p>
+        <h4>Instructions</h4>
+        <ol>
+          <li>You need an account on <a href="https://developer.autodesk.com/" target="_blank">https://developer.autodesk.com/</a></li>
+          <li><strong>Sign in</strong> using the buttons on each side.</li>
+          <li>Navigate the tree and select a <strong>revit file</strong> to view it</li>
+            <li>Once you are viewing the file, click on the excel export button, the last toolbar icon on the bottom right of the screen</li>
+          <li>Open the .XLSX file with Excel</li>
+          <ul>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

@@ -61,8 +61,8 @@ var ForgeXLS = {
     }
   },
 
-  downloadXLSX: function (urn, fileName, token, status) {    
-    if (fileName.indexOf('.rvt') == -1) {
+  downloadXLSX: function (urn, fileName, token, status, fileType) {    
+    if (fileType.indexOf('rvt') == -1) {
       if (status) status(true, 'Not a Revit file. Only Revit files are supported, at the moment. Aborting conversion.');
       return;
     }

@@ -181,15 +181,18 @@ function getVersions(projectId, itemId, tokenSession, res) {
       var versionsForTree = [];
       versions.body.data.forEach(function (version) {
         var lastModifiedTime = moment(version.attributes.lastModifiedTime);
-        var days = moment().diff(lastModifiedTime, 'days')
+        var days = moment().diff(lastModifiedTime, 'days');
+        var fileType = version.attributes.fileType;
         var dateFormated = (versions.body.data.length > 1 || days > 7 ? lastModifiedTime.format('MMM D, YYYY, h:mm a') : lastModifiedTime.fromNow());
-        var designId = (version.relationships != null && version.relationships.derivatives != null ?
-        version.relationships.derivatives.data.id : null);
+        var designId = (version.relationships != null && version.relationships.derivatives != null ? version.relationships.derivatives.data.id : null);
+        var fileName = version.attributes.fileName;
         versionsForTree.push(prepareItemForTree(
           designId,
           dateFormated + ' by ' + version.attributes.lastModifiedUserName,
           'versions',
-          false
+          false,
+          fileType,
+          fileName
         ));
       });
       res.json(versionsForTree);
@@ -202,8 +205,8 @@ function getVersions(projectId, itemId, tokenSession, res) {
 
 
 
-function prepareItemForTree(_id, _text, _type, _children) {
-  return {id: _id, text: _text, type: _type, children: _children};
+function prepareItemForTree(_id, _text, _type, _children, _fileType, _fileName) {
+  return { id: _id, text: _text, type: _type, children: _children, fileType:_fileType, fileName: _fileName };
 }
 
 /*

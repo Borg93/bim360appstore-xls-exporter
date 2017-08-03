@@ -22,17 +22,19 @@
 
 var viewerApp;
 var fileName;
+var fileType;
 var options = {};
 var token = '';
 var documentId;
 
 
-function launchViewer(urn, name) {
+function launchViewer(urn, name, ftype) {
   options = {
     env: 'AutodeskProduction',
     getAccessToken: getForgeToken
   };
   fileName = name;
+  fileType = ftype;
   documentId = urn;
   Autodesk.Viewing.Initializer(options, function onInitialized() {
     viewerApp = new Autodesk.Viewing.ViewingApplication('forgeViewer');
