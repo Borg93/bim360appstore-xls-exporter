@@ -1,6 +1,6 @@
 # Export to Excel
 
-![thumbnail](thumbnail.jpg)
+![thumbnail](video-exportXLS.gif)
 
 # Description
 
