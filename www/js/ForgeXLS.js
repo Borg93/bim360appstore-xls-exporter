@@ -35,8 +35,7 @@ var ForgeXLS = {
         success: function (response) {
           if (response.result && response.result === 'success') {
             setTimeout(function () {
-              console.log('Data not ready... retry in 1 second');
-              status(false, 'Please wait. Retrieving meta-data for ' + fileName);
+              $.notify('Please wait. Retrieving meta-data for ' + fileName, { className: "info", position:"bottom right" });
               ForgeXLS.Utility.forgeGetRequest(url, token, callback);
             }, 3000);
             return;
