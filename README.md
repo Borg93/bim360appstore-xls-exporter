@@ -8,7 +8,7 @@ This sample application demonstrates how to extract Revit data on your BIM360 ac
 
 ### Live version
 
-[https://BIM360xls-exporter.herokuapp.com](https://bim360xls-exporter.herokuapp.com/)
+[https://bim360xls.autodesk.io](https://bim360xls.autodesk.io/)
 
 Video: [Youtube](https://youtu.be/800d2xmQl0s)
 

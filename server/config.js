@@ -32,7 +32,7 @@ module.exports = {
   },
 
   // Required scopes for your application on server-side
-  scopeInternal: ['data:read','data:write','data:create','data:search'],
+  scopeInternal: ['data:read'],
   // Required scope of the token sent to the client
   scopePublic: ['viewables:read'],
 };

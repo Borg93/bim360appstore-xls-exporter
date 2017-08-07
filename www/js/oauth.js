@@ -25,8 +25,8 @@ $(document).ready(function () {
     getForgeUserProfile(function (profile) {
       $('#signInProfileImage').removeClass(); // remove glyphicon-user
       $('#signInProfileImage').html('<img src="' + profile.picture + '"/>')
-      $('#signInButtonText').text(profile.name);
-      $('#signInButtonText').attr('title', 'Click to Sign Out');
+      $('#signInButtonText').text("Sign Out");
+      $('#signInButtonText').attr('title', "Sign out " + profile.name);
       $('#signInButton').click(forgeLogoff);
     });
   }
