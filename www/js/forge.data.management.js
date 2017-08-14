@@ -18,6 +18,7 @@
 
 $(document).ready(function () {
   $('#refreshAutodeskTree').hide();
+  new Clipboard(".input-group-addon");
   if (getForgeToken() != '') {
     prepareDataManagementTree();
     $('#refreshAutodeskTree').show();
@@ -49,9 +50,11 @@ function prepareDataManagementTree() {
               haveBIM360Hub = true;
           });
           if (!haveBIM360Hub) {
-            $.getJSON("/api/forge/clientID", function (data) {
-              $("#ClientID").val(data.ForgeClientId);
+            $.getJSON("/api/forge/clientID", function (res) {
+              $("#ClientID").val(res.ForgeClientId);
+              $('#provisionAccountModal').modal();
               $("#BIMconfig").show();
+              haveBIM360Hub = true;
             });
           }
         }        
